@@ -4,6 +4,7 @@ import random
     
 random.seed(0)
 
+
 os.chdir(os.path.dirname(os.getcwd()))
 
 nets = ['EfficientNetB0', 'RegNetX_200MF', 'SimpleDLA']
