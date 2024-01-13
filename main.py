@@ -15,7 +15,7 @@ from projection import generalize_cal_dist, generalize_cal_proj
 import pynvml
 
 def found_device():
-    default_device=0
+    default_device=1
     default_memory_threshold=500
     pynvml.nvmlInit()
     while True:
