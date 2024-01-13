@@ -2,7 +2,7 @@ import os
 import time
 import random
     
-#random.seed(0)
+random.seed(0)
 
 os.chdir(os.path.dirname(os.getcwd()))
 
