@@ -18,20 +18,20 @@ test_loss_list = [float(num) for num in lines[1].split()]
 train_accuracy_list = [float(num) for num in lines[2].split()]
 test_accuracy_list = [float(num) for num in lines[3].split()]
 average_region_list = [float(num) for num in lines[4].split()]
-variance_region_list = [float(num) for num in lines[5].split()]
+#variance_region_list = [float(num) for num in lines[5].split()]
 
 plt.figure()
 plt.plot(range(start_epoch, start_epoch + num_epochs + 1, skip_plot), average_region_list, label='Average Regions')
-plt.fill_between(range(start_epoch, start_epoch + num_epochs + 1, skip_plot), 
-                np.array(average_region_list) - np.array(variance_region_list), 
-                np.array(average_region_list) + np.array(variance_region_list), 
-                alpha=0.5, label='Variance')
+# plt.fill_between(range(start_epoch, start_epoch + num_epochs + 1, skip_plot), 
+#                 np.array(average_region_list) - np.array(variance_region_list), 
+#                 np.array(average_region_list) + np.array(variance_region_list), 
+#                 alpha=0.5, label='Variance')
 plt.title('Average number of regions over Epochs', fontsize=18)
 plt.tick_params(axis='both', which='major', labelsize=14)
 plt.xlabel('Epochs', fontsize=18)
 plt.ylabel('Average number of regions', fontsize=18)
 plt.legend(fontsize = 16)  # Now this will work because elements have labels
-plt.savefig('finalgraph/average_region.png')
+plt.savefig('final_graph/average_region.png')
 plt.close()
 
 # plt.figure()

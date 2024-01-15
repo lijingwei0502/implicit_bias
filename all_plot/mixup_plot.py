@@ -3,13 +3,13 @@ import numpy as np
 import os
 
 os.chdir(os.path.dirname(os.getcwd()))
-nets = ['Resnet18','EfficientNetB0', 'SENet18']
 # 读取数据
 
+datasets = ['primal', 'mixup']
 x = []
 y = []
-for net in nets:
-    root = 'final/' + str(net) + '.txt'
+for dataset in datasets:
+    root = 'mix_aug/' + str(datasets) + '.txt'
     data = np.genfromtxt(root)
 
     # 打印原始数据的行数
@@ -55,12 +55,11 @@ for net in nets:
 plt.figure(figsize=(10, 8))
 
 # Plotting the data
-plt.scatter(x[0], y[0], label='Resnet18', color='blue', marker='o')
-plt.scatter(x[1], y[1], label='EfficientNetB0', color='red', marker='v')
-plt.scatter(x[2], y[2], label='SENet18', color='black', marker='^')
+plt.scatter(x[0], y[0], label='Primal', color='blue', marker='o')
+plt.scatter(x[1], y[1], label='Mixup', color='red', marker='v')
 
 # Adjusting font sizes to match the uploaded image as closely as possible
-plt.title('Average Regions vs. Test Accuracy', fontsize=18)
+plt.title('The Effect of Mixup', fontsize=18)
 plt.xlabel('Average regions', fontsize=16)
 plt.ylabel('Test Accuracy', fontsize=16)
 plt.legend(fontsize=16)
@@ -68,6 +67,5 @@ plt.tick_params(axis='both', which='major', labelsize=14)
 
 if os.path.exists('final_corr') == False:
     os.mkdir('final_corr')
-root = 'final_corr' + '/' + 'start.png'
+root = 'final_corr' + '/' + 'mixup.png'
 plt.savefig(root)  # 保存图像
-
