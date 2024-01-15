@@ -6,7 +6,7 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 def calculate_region(args, epoch, regions_list, entropy_list, device, model, samples_list):
     model.eval()
     with torch.no_grad():
-        if args.data_choose >= 4:
+        if args.data_choose <=2:
             x_min, x_max = args.scope_l, args.scope_r
             xx = np.linspace(x_min, x_max, num=200)
             num_points = len(xx)
@@ -29,8 +29,8 @@ def calculate_region(args, epoch, regions_list, entropy_list, device, model, sam
         else:
             x_min, x_max = args.scope_l, args.scope_r
             y_min, y_max = args.scope_l, args.scope_r
-            xx, yy = np.meshgrid(np.linspace(x_min, x_max, num=50),
-                                np.linspace(y_min, y_max, num=50))
+            xx, yy = np.meshgrid(np.linspace(x_min, x_max, num=30),
+                                np.linspace(y_min, y_max, num=30))
             num_points = xx.ravel().shape[0]
             cnt = 0
             for sample_1, sample_2, sample_3 in samples_list:
@@ -92,7 +92,6 @@ def cal_componet_entropy(prediction_matrix):
                         queue.append([tmp_x, tmp_y])
             all_kinds += 1
             entropy += tnt/space * np.log(tnt/space)
-    
     return all_kinds, -entropy
 
 def cal_line(prediction_line):

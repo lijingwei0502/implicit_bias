@@ -10,8 +10,6 @@ def get_net(args, device):
         net = ResNet34()
     elif args.net == 'VGG19':
         net = VGG('VGG19')
-    elif args.net == 'PreActResNet18': 
-        net = PreActResNet18()
     elif args.net == 'GoogLeNet':
         net = GoogLeNet()
     elif args.net == 'DenseNet121':
@@ -43,10 +41,6 @@ def get_net(args, device):
         net.linear.bias.data.zero_()
 
     net = net.to(device)
-
-    if device == 'cuda':
-        net = torch.nn.DataParallel(net)
-        cudnn.benchmark = True
 
     criterion = nn.CrossEntropyLoss()
     

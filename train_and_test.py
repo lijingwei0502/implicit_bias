@@ -143,4 +143,11 @@ def calculate_region_entropy(args, criterion, optimizer, scheduler, device, net,
     f.write(' '.join([str(elem) for elem in average_region_list]) + ' ' + str(train_accuracy_list[-1]) + ' ' + str(test_accuracy_list[-1]) + ' ' + str(args.weight_decay) + ' ' + str(args.lr) + ' ' + str(args.batch_size) + '\n')
     # g = open('final/entropy' + str(args.device) + '.txt', 'a')
     # g.write(' '.join([str(elem) for elem in average_entropy_list]) + ' ' + str(test_accuracy_list[-1]) + ' ' + str(args.weight_decay) + ' ' + str(args.lr) + ' ' + str(args.batch_size) + ' ' + str(args.net) + '\n')
-    
+    h = open(args.dir + '/accuracy.txt', 'a')
+    h.write(' '.join([str(elem) for elem in train_loss_list]) + '\n')
+    h.write(' '.join([str(elem) for elem in test_loss_list]) + '\n')
+    h.write(' '.join([str(elem) for elem in train_accuracy_list]) + '\n')
+    h.write(' '.join([str(elem) for elem in test_accuracy_list]) + '\n')
+    h.write(' '.join([str(elem) for elem in average_region_list]) + '\n')
+    h.write(' '.join([str(elem) for elem in variance_region_list]) + '\n')
+
