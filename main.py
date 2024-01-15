@@ -6,12 +6,7 @@ import numpy as np
 import torch.nn as nn
 from net import get_net
 from load_dataset import load_train_test
-from train_and_test import small_plot, calculate_region_entropy, train_test
-from generate_plane import generate_sample, generate_nearest_sample, calculate_decision_center, n_generate_nearest_sample
-from calculate import coincide, seperate_coincide, n_coincide, general_triangle, general_test_cauchy, general_test_gaussian
-from projection import lasso_find_nearest_plane, find_nearest_plane, cal_dist, cal_proj, find_random_points, lasso_regression_find_plane, scs_find_plane, near_scs_find_plane
-from projection import generalize_cal_dist, generalize_cal_proj
-
+from train_and_test import small_plot, calculate_region_entropy
 import pynvml
 
 def found_device():

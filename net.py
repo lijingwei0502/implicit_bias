@@ -4,16 +4,10 @@ import torch.optim as optim
 
 
 def get_net(args, device):
-    if args.net == 'resnet18':
+    if args.net == 'Resnet18':
         net = ResNet18()
-    elif args.net == 'resnet34':
+    elif args.net == 'Resnet34':
         net = ResNet34()
-    elif args.net == 'resnet50':
-        net = ResNet50()
-    elif args.net == 'resnet101':
-        net = ResNet101()
-    elif args.net == 'resnet152':
-        net = ResNet152()
     elif args.net == 'VGG19':
         net = VGG('VGG19')
     elif args.net == 'PreActResNet18': 

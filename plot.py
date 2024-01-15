@@ -1,43 +1,7 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from projection import cal_proj
 from matplotlib.colors import ListedColormap, BoundaryNorm
-from matplotlib.cm import ScalarMappable
-
-def plot_one_decision_boundary(device, model, epoch, samples_list):
-    model.eval()
-    with torch.no_grad():
-        x_min, x_max = -1, 2
-        y_min, y_max = -1, 2
-        xx, yy = np.meshgrid(np.linspace(x_min, x_max, num=100),
-                             np.linspace(y_min, y_max, num=100))
-        num_points = xx.ravel().shape[0]
-        generated_samples = np.zeros((num_points, 3, 32, 32))
-        for i in range(num_points):
-            alpha, beta = xx.ravel()[i], yy.ravel()[i]
-            generated_sample = (1 - alpha - beta) * sample_1 + alpha * sample_2 + beta * sample_3
-            generated_samples[i] = generated_sample
-        input_data = torch.tensor(generated_samples, dtype=torch.float32).to(device)
-        output = model(input_data)
-        _, predictions = torch.max(output, 1)
-        predictions = predictions.cpu().numpy()
-        predictions = predictions.reshape(xx.shape)
-        colors = ['blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'coral', 'white', 'orange', 'purple']
-        num_classes = 10
-        class_colors = colors[:num_classes]
-        cmap = ListedColormap(class_colors)
-        norm = BoundaryNorm(boundaries=np.arange(num_classes + 1), ncolors=num_classes)
-        plt.contourf(xx, yy, predictions, cmap=cmap, norm=norm, levels=np.arange(num_classes+1)-0.5)
-        label_colors = [cmap(norm(label)) for label in close_label]
-        plt.scatter(close_a, close_b, c=label_colors, s=20, marker='o', edgecolors='black', zorder=6)
-        sm = ScalarMappable(cmap=cmap, norm=norm)
-        sm.set_array([])  # 需要设置一个空数组来激活 ScalarMappable
-        colorbar = plt.colorbar(sm, ticks=np.arange(num_classes))
-        colorbar.set_ticklabels(np.arange(num_classes))
-        # 不要标注刻度
-        plt.xticks([])
-        plt.yticks([])
 
 def calculate_region(args, epoch, regions_list, entropy_list, device, model, samples_list):
     model.eval()
@@ -85,20 +49,22 @@ def calculate_region(args, epoch, regions_list, entropy_list, device, model, sam
                 regions_list.append(regions)
                 entropy_list.append(entropy)
                 if args.plot and cnt %20 == 0:
-                    plt.figure()
+                    plt.figure(figsize=(5, 5))
                     colors = ['blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'coral', 'white', 'orange', 'purple']
                     num_classes = 10
                     class_colors = colors[:num_classes]
                     cmap = ListedColormap(class_colors)
                     norm = BoundaryNorm(boundaries=np.arange(num_classes + 1), ncolors=num_classes)
                     plt.contourf(xx, yy, predictions, cmap=cmap, norm=norm, levels=np.arange(num_classes+1)-0.5)
+                    plt.tick_params(axis='both', which='both', length=0, fontsize=14)
+                    plt.xlabel(r'$\alpha$', fontsize=18, labelpad=3)  # Alpha for the x-axis
+                    plt.ylabel(r'$\beta$', fontsize=18, labelpad=3)   # Beta for the y-axis
                     # 按照epoch数和cnt//20保存图片
                     plt.savefig(args.dir + f'/epoch_{epoch}_cnt_{cnt//20}.png')
                             
 def cal_componet_entropy(prediction_matrix):
     mark_matrix = np.zeros(prediction_matrix.shape, dtype = 'int64')
     mark_num = 0
-
     w, h = prediction_matrix.shape[0], prediction_matrix.shape[1]
     direct_delta = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
     all_kinds = 0
@@ -124,10 +90,7 @@ def cal_componet_entropy(prediction_matrix):
                     if prediction_matrix[tmp_x][tmp_y] == prediction_matrix[cur_x][cur_y]:
                         mark_matrix[tmp_x][tmp_y] = mark_matrix[cur_x][cur_y]
                         queue.append([tmp_x, tmp_y])
-
-            #if tnt >= 4:
             all_kinds += 1
-            
             entropy += tnt/space * np.log(tnt/space)
     
     return all_kinds, -entropy
@@ -135,7 +98,6 @@ def cal_componet_entropy(prediction_matrix):
 def cal_line(prediction_line):
     mark_line = np.zeros(prediction_line.shape, dtype = 'int64')
     mark_num = 0
-
     w = prediction_line.shape[0]
     direct_delta = [-1, 1]
     all_kinds = 0
@@ -159,14 +121,9 @@ def cal_line(prediction_line):
                 if prediction_line[tmp_x] == prediction_line[cur_x]:
                     mark_line[tmp_x] = mark_line[cur_x]
                     queue.append(tmp_x)
-
-        #if tnt >= 4:
         all_kinds += 1
-        
         entropy += tnt/space * np.log(tnt/space)
     return all_kinds, -entropy
-
-
 
 def plot_loss_accuracy(args, start_epoch, num_epochs, average_region_list, average_entropy_list, variance_region_list, variance_entropy_list, train_loss_list, test_loss_list, train_accuracy_list, test_accuracy_list):
     
@@ -176,42 +133,44 @@ def plot_loss_accuracy(args, start_epoch, num_epochs, average_region_list, avera
                     np.array(average_region_list) - np.array(variance_region_list), 
                     np.array(average_region_list) + np.array(variance_region_list), 
                     alpha=0.5, label='Variance')
-    plt.title('Average number of regions over Epochs')
-    plt.xlabel('Epochs')
-    plt.ylabel('Average number of regions')
+    plt.title('Average number of regions over Epochs', fontsize=18)
+    plt.tick_params(axis='both', which='major', labelsize=14)
+    plt.xlabel('Epochs', fontsize=18)
+    plt.ylabel('Average number of regions', fontsize=18)
     plt.legend()  # Now this will work because elements have labels
     plt.savefig(args.dir + '/average_region.png')
     plt.close()
 
-    plt.figure()
-    plt.plot(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot), average_entropy_list, label='Average Entropy')
-    plt.fill_between(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot),
-                    np.array(average_entropy_list) - np.array(variance_entropy_list),
-                    np.array(average_entropy_list) + np.array(variance_entropy_list),
-                    alpha=0.5, label='Variance')
-    plt.title('Average Entropy over Epochs')
-    plt.xlabel('Epochs')
-    plt.ylabel('Average Entropy')
-    plt.legend()  # Now this will work because elements have labels
-    plt.savefig(args.dir + '/average_entropy.png')
-    plt.close()
-    
+    # plt.figure()
+    # plt.plot(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot), average_entropy_list, label='Average Entropy')
+    # plt.fill_between(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot),
+    #                 np.array(average_entropy_list) - np.array(variance_entropy_list),
+    #                 np.array(average_entropy_list) + np.array(variance_entropy_list),
+    #                 alpha=0.5, label='Variance')
+    # plt.title('Average Entropy over Epochs')
+    # plt.xlabel('Epochs')
+    # plt.ylabel('Average Entropy')
+    # plt.legend()  # Now this will work because elements have labels
+    # plt.savefig(args.dir + '/average_entropy.png')
+    # plt.close()
 
     plt.figure()
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1), train_loss_list, label='Train Loss')
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1), test_loss_list, label='Test Loss')
-    plt.title('Train and Test Loss Over Epochs')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
+    plt.title('Train and Test Loss Over Epochs', fontsize=18)
+    plt.tick_params(axis='both', which='major', labelsize=14)
+    plt.xlabel('Epochs', fontsize=18)
+    plt.ylabel('Loss', fontsize=18)
     plt.savefig(args.dir + '/loss_curve.png') 
     plt.close()  
 
     plt.figure()
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1), train_accuracy_list, label='Train Accuracy')
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1), test_accuracy_list, label='Test Accuracy')
-    plt.title('Train and Test Accuracy Over Epochs')
-    plt.xlabel('Epochs')
-    plt.ylabel('Accuracy (%)')
+    plt.title('Train and Test Accuracy Over Epochs', fontsize=18)
+    plt.tick_params(axis='both', which='major', labelsize=14)
+    plt.xlabel('Epochs', fontsize=18)
+    plt.ylabel('Accuracy (%)', fontsize=18)
     plt.savefig(args.dir + '/accuracy_curve.png') 
     plt.close() 
 
