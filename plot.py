@@ -128,10 +128,10 @@ def plot_loss_accuracy(args, start_epoch, num_epochs, average_region_list, avera
     
     plt.figure()
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot), average_region_list, label='Average Regions')
-    plt.fill_between(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot), 
-                    np.array(average_region_list) - np.array(variance_region_list), 
-                    np.array(average_region_list) + np.array(variance_region_list), 
-                    alpha=0.5, label='Variance')
+    # plt.fill_between(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot), 
+    #                 np.array(average_region_list) - np.array(variance_region_list), 
+    #                 np.array(average_region_list) + np.array(variance_region_list), 
+    #                 alpha=0.5, label='Variance')
     plt.title('Average number of regions over Epochs', fontsize=18)
     plt.tick_params(axis='both', which='major', labelsize=14)
     plt.xlabel('Epochs', fontsize=18)

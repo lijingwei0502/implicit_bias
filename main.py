@@ -6,7 +6,7 @@ import numpy as np
 import torch.nn as nn
 from net import get_net
 from load_dataset import load_train_test
-from train_and_test import small_plot, calculate_region_entropy
+from train_and_test import calculate_region_entropy
 import pynvml
 
 def found_device():
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     parser.add_argument('--training_epochs', default=200, type=int, help='training epochs')
     parser.add_argument('--mixup', default=0, type=int, help='whether use mixup')
     parser.add_argument('--weight_decay', default=5e-4, type=float, help='weight decay')
-    parser.add_argument('--net', default='resnet18', type=str, help='network')
+    parser.add_argument('--net', default='Resnet18', type=str, help='network')
     parser.add_argument('--scope_l', default=0, type=int, help='plane_scope_l')
     parser.add_argument('--scope_r', default=1, type=int, help='plane_scope_r')
     parser.add_argument('--skip_plot',default=1,type=int, help= 'how to plot')
@@ -61,6 +61,7 @@ if __name__ == "__main__":
     parser.add_argument('--batch_size', default=256,type=int,help='batch size')
     parser.add_argument('--random', default=0,type=int,help='whether_random_crop')
     parser.add_argument('--data_choose', default=0,type=int,help='how to choose data')
+    parser.add_argument('--task', default='correlation',type=str,help='task')
     args = parser.parse_args()
     set_seed(args.seed)
     device = 'cuda:' + found_device() if torch.cuda.is_available() else 'cpu'
@@ -69,6 +70,8 @@ if __name__ == "__main__":
     net, criterion, optimizer, scheduler = get_net(args, device)
     if not os.path.exists(args.dir):
         os.makedirs(args.dir)
+    if not os.path.exists(args.task):
+        os.makedirs(args.task)
     if args.resume:
         # Load checkpoint.
         print('==> Resuming from checkpoint..')
@@ -76,5 +79,4 @@ if __name__ == "__main__":
         net.load_state_dict(checkpoint['net'])
         start_epoch = checkpoint['epoch'] + 1
     
-    #train_test(args, criterion, optimizer, scheduler, device, net, start_epoch, trainloader, testloader)
     calculate_region_entropy(args, criterion, optimizer, scheduler, device, net, start_epoch, trainloader, testloader, trainset_no_random, testset)

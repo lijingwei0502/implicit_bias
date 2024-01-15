@@ -1,0 +1,2 @@
+nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan 47.65 83.59 1e-05 0.1 1024
+nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan 47.818 83.81 1e-06 0.1 1024
