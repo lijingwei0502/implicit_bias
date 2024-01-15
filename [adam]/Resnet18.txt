@@ -1,3 +1,0 @@
-nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan 100.0 78.86 1e-07 0.1 512
-nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan 99.764 77.34 1e-05 0.1 256
-nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan 100.0 82.33 1e-06 0.1 256

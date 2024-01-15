@@ -6,7 +6,7 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 def calculate_region(args, epoch, regions_list, entropy_list, device, model, samples_list):
     model.eval()
     with torch.no_grad():
-        if args.data_choose <=2:
+        if args.data_choose !=3:
             x_min, x_max = args.scope_l, args.scope_r
             xx = np.linspace(x_min, x_max, num=200)
             num_points = len(xx)
@@ -126,7 +126,7 @@ def cal_line(prediction_line):
 
 def plot_loss_accuracy(args, start_epoch, num_epochs, average_region_list, average_entropy_list, variance_region_list, variance_entropy_list, train_loss_list, test_loss_list, train_accuracy_list, test_accuracy_list):
     
-    plt.figure()
+    plt.figure(figsize=(10, 8))
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot), average_region_list, label='Average Regions')
     # plt.fill_between(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot), 
     #                 np.array(average_region_list) - np.array(variance_region_list), 
@@ -153,7 +153,7 @@ def plot_loss_accuracy(args, start_epoch, num_epochs, average_region_list, avera
     # plt.savefig(args.dir + '/average_entropy.png')
     # plt.close()
 
-    plt.figure()
+    plt.figure(figsize=(10, 8))
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1), train_loss_list, label='Train Loss')
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1), test_loss_list, label='Test Loss')
     plt.title('Train and Test Loss Over Epochs', fontsize=18)
@@ -163,7 +163,7 @@ def plot_loss_accuracy(args, start_epoch, num_epochs, average_region_list, avera
     plt.savefig(args.dir + '/loss_curve.png') 
     plt.close()  
 
-    plt.figure()
+    plt.figure(figsize=(10, 8))
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1), train_accuracy_list, label='Train Accuracy')
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1), test_accuracy_list, label='Test Accuracy')
     plt.title('Train and Test Accuracy Over Epochs', fontsize=18)

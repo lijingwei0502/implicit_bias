@@ -116,6 +116,8 @@ def calculate_region_entropy(args, criterion, optimizer, scheduler, device, net,
                 sample, label = testset[index]
                 samples.append(sample)
                 labels.append(label)
+        samples_list.append(samples)
+    
 
     average_region_list = []
     variance_region_list = []
