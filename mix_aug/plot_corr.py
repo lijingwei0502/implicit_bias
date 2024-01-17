@@ -44,16 +44,17 @@ for dataset in datasets:
         #y_current = averaged_data[:, 21]-averaged_data[:, 22]
         y_current = averaged_data[:,22]
         correlation = np.corrcoef(x_current, y_current)[0, 1]  # 计算相关系数
-
+        print(correlation)
         # 绘制散点图
         plt.scatter(x_current, y_current)
-        plt.xlabel('Average Regions',fontsize=18)
+        plt.xlabel('Average Regions',fontsize=22)
         #plt.ylabel('Generalization Gap')
-        plt.ylabel('Test Accuracy',fontsize=18)
-        plt.tick_params(axis='both', which='major', labelsize=16)
-        plt.title(f'Correlation: {correlation:.2f}', fontsize=18)
-        root = str(dataset) + '.png'
+        plt.ylabel('Test Accuracy',fontsize=22)
+        plt.tick_params(axis='both', which='major', labelsize=20)
+        plt.title(f'Correlation: {correlation:.2f}', fontsize=22)
+        root = 'corr_' + str(dataset) + '.png'
         plt.savefig(root)  # 保存图像
         plt.clf()  # 清除当前图像
+        print('cacssac')
 
 

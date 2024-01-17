@@ -29,8 +29,8 @@ def calculate_region(args, epoch, regions_list, entropy_list, device, model, sam
         else:
             x_min, x_max = args.scope_l, args.scope_r
             y_min, y_max = args.scope_l, args.scope_r
-            xx, yy = np.meshgrid(np.linspace(x_min, x_max, num=30),
-                                np.linspace(y_min, y_max, num=30))
+            xx, yy = np.meshgrid(np.linspace(x_min, x_max, num=40),
+                                np.linspace(y_min, y_max, num=40))
             num_points = xx.ravel().shape[0]
             cnt = 0
             for sample_1, sample_2, sample_3 in samples_list:
@@ -49,16 +49,16 @@ def calculate_region(args, epoch, regions_list, entropy_list, device, model, sam
                 regions_list.append(regions)
                 entropy_list.append(entropy)
                 if args.plot and cnt %20 == 0:
-                    plt.figure(figsize=(5, 5))
+                    plt.figure(figsize=(8, 8))
                     colors = ['blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'coral', 'white', 'orange', 'purple']
                     num_classes = 10
                     class_colors = colors[:num_classes]
                     cmap = ListedColormap(class_colors)
                     norm = BoundaryNorm(boundaries=np.arange(num_classes + 1), ncolors=num_classes)
                     plt.contourf(xx, yy, predictions, cmap=cmap, norm=norm, levels=np.arange(num_classes+1)-0.5)
-                    plt.tick_params(axis='both', which='both', length=0, fontsize=14)
-                    plt.xlabel(r'$\alpha$', fontsize=18, labelpad=3)  # Alpha for the x-axis
-                    plt.ylabel(r'$\beta$', fontsize=18, labelpad=3)   # Beta for the y-axis
+                    plt.tick_params(axis='both', which='both', length=0, labelsize=14)
+                    plt.xlabel(r'$\alpha$', fontsize=20, labelpad=3)  # Alpha for the x-axis
+                    plt.ylabel(r'$\beta$', fontsize=20, labelpad=3)   # Beta for the y-axis
                     # 按照epoch数和cnt//20保存图片
                     plt.savefig(args.dir + f'/epoch_{epoch}_cnt_{cnt//20}.png')
                             

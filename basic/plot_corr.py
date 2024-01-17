@@ -47,11 +47,11 @@ for net in nets:
 
         # 绘制散点图
         plt.scatter(x_current, y_current)
-        plt.xlabel('Average Regions',fontsize=18)
+        plt.xlabel('Average Regions',fontsize=22)
         #plt.ylabel('Generalization Gap')
-        plt.ylabel('Test Accuracy',fontsize=18)
-        plt.tick_params(axis='both', which='major', labelsize=16)
-        plt.title(f'Correlation: {correlation:.2f}', fontsize=18)
+        plt.ylabel('Test Accuracy',fontsize=22)
+        plt.tick_params(axis='both', which='major', labelsize=20)
+        plt.title(f'Correlation of {net} : {correlation:.2f}', fontsize=22)
         root = str(net) + '.png'
         plt.savefig(root)  # 保存图像
         plt.clf()  # 清除当前图像

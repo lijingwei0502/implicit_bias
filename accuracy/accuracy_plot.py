@@ -1,8 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import os
-
-os.chdir(os.path.dirname(os.getcwd()))
 
 start_epoch = 0
 num_epochs = 200    
@@ -54,6 +51,7 @@ plt.title('Train and Test Loss Over Epochs', fontsize=18)
 plt.tick_params(axis='both', which='major', labelsize=14)
 plt.xlabel('Epochs', fontsize=18)
 plt.ylabel('Loss', fontsize=18)
+plt.legend(fontsize = 16)
 plt.savefig('loss_curve.png') 
 plt.close()  
 
@@ -64,5 +62,6 @@ plt.title('Train and Test Accuracy Over Epochs', fontsize=18)
 plt.tick_params(axis='both', which='major', labelsize=14)
 plt.xlabel('Epochs', fontsize=18)
 plt.ylabel('Accuracy (%)', fontsize=18)
+plt.legend(fontsize = 16)
 plt.savefig('accuracy_curve.png') 
 plt.close()

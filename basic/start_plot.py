@@ -59,11 +59,11 @@ plt.scatter(x[1], y[1], label='EfficientNetB0', color='red', marker='v')
 plt.scatter(x[2], y[2], label='SENet18', color='black', marker='^')
 
 # Adjusting font sizes to match the uploaded image as closely as possible
-plt.title('Average Regions vs. Test Accuracy', fontsize=18)
-plt.xlabel('Average regions', fontsize=16)
-plt.ylabel('Test Accuracy', fontsize=16)
-plt.legend(fontsize=16)
-plt.tick_params(axis='both', which='major', labelsize=14)
+plt.title('Average Regions vs. Test Accuracy', fontsize=22)
+plt.xlabel('Average regions', fontsize=20)
+plt.ylabel('Test Accuracy', fontsize=20)
+plt.legend(fontsize=18)
+plt.tick_params(axis='both', which='major', labelsize=18)
 
 root = 'start.png'
 plt.savefig(root)  # 保存图像

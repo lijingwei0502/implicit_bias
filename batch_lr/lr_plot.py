@@ -54,15 +54,15 @@ for net in nets:
 
     # 设置横坐标的刻度为新的等距值，并将标签设置为原始的非等距值
     plt.xticks(list(learning_rate_mapping.values()), list(learning_rate_mapping.keys()))
-    plt.xticks(fontsize=14)  # 横坐标轴刻度
-    plt.yticks(fontsize=14)  # 纵坐标轴刻度
+    plt.xticks(fontsize=18)  # 横坐标轴刻度
+    plt.yticks(fontsize=18)  # 纵坐标轴刻度
     # 添加图例
-    plt.legend(fontsize=16)
+    plt.legend(fontsize=18)
 
 # 添加标题和轴标签
-plt.title('Average Regions vs. Learning Rate', fontsize=18)
-plt.xlabel('Learning Rate', fontsize=16)
-plt.ylabel('Average Regions', fontsize=16)
+plt.title('Average Regions vs. Learning Rate', fontsize=22)
+plt.xlabel('Learning Rate', fontsize=20)
+plt.ylabel('Average Regions', fontsize=20)
 
 # 显示图表
 plt.savefig('region_counts_vs_learning_rate.png')

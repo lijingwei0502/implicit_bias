@@ -105,7 +105,7 @@ def calculate_region_entropy(args, criterion, optimizer, scheduler, device, net,
             # 生成两个高斯随机向量
             random_direction_1 = torch.randn_like(sample)
             # 设置延伸长度
-            length = 0.1  # 可以调整这个长度
+            length = 0.5  # 可以调整这个长度
             # 生成两个新的点
             new_point_1 = sample + length * random_direction_1
             samples.append(sample)
@@ -124,7 +124,6 @@ def calculate_region_entropy(args, criterion, optimizer, scheduler, device, net,
     average_entropy_list = []
     variance_entropy_list = []
     for epoch in range(start_epoch, start_epoch + num_epochs + 1):
-        scheduler.step()
         if epoch % args.skip_plot == 0:
             regions_list = []
             entropy_list = []
@@ -139,6 +138,7 @@ def calculate_region_entropy(args, criterion, optimizer, scheduler, device, net,
             variance_entropy_list.append(variance_entropy)
         train(args, device, epoch, net, trainloader, criterion, optimizer, train_loss_list, train_accuracy_list)
         test(device, net, criterion, testloader, test_loss_list, test_accuracy_list)
+        scheduler.step()
            
     plot_loss_accuracy(args, start_epoch, num_epochs, average_region_list, average_entropy_list, variance_region_list, variance_entropy_list, train_loss_list, test_loss_list, train_accuracy_list, test_accuracy_list)
     f = open(str(args.task) + '/' + str(args.net) + '.txt', 'a')

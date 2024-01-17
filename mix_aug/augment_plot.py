@@ -56,11 +56,11 @@ plt.scatter(x[0], y[0], label='Primal', color='blue', marker='o')
 plt.scatter(x[1], y[1], label='Augmented', color='red', marker='v')
 
 # Adjusting font sizes to match the uploaded image as closely as possible
-plt.title('The Effect of Data Augmentation', fontsize=18)
-plt.xlabel('Average regions', fontsize=16)
-plt.ylabel('Test Accuracy', fontsize=16)
-plt.legend(fontsize=16)
-plt.tick_params(axis='both', which='major', labelsize=14)
+plt.title('The Effect of Data Augmentation', fontsize=22)
+plt.xlabel('Average regions', fontsize=20)
+plt.ylabel('Test Accuracy', fontsize=20)
+plt.legend(fontsize=18)
+plt.tick_params(axis='both', which='major', labelsize=18)
 
 root = 'augmentation.png'
 plt.savefig(root)  # 保存图像
