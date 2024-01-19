@@ -4,8 +4,13 @@ import torch.optim as optim
 
 
 def get_net(args, device):
+    num_classes = 10
+    if args.dataset == "imagenet-1k":
+        num_classes = 1000
+    print('[dataset]: ', args.dataset, '[num_classes]: ', num_classes, '[model]: ', args.net)
+
     if args.net == 'Resnet18':
-        net = ResNet18()
+        net = ResNet18(num_classes = num_classes)
     elif args.net == 'Resnet34':
         net = ResNet34()
     elif args.net == 'VGG19':

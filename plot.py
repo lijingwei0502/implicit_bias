@@ -13,7 +13,10 @@ def calculate_region(args, epoch, regions_list, entropy_list, device, model, sam
             cnt = 0
             for sample_1, sample_2 in samples_list:
                 cnt += 1
-                generated_samples = np.zeros((num_points, 3, 32, 32))
+                if args.dataset == 'cifar10':
+                    generated_samples = np.zeros((num_points, 3, 32, 32))
+                elif args.dataset == 'imagenet-1k':
+                    generated_samples = np.zeros((num_points, 3, 224, 224))
                 for i in range(num_points):
                     alpha = xx[i]
                     generated_sample = (1 - alpha) * sample_1 + alpha * sample_2
@@ -35,7 +38,10 @@ def calculate_region(args, epoch, regions_list, entropy_list, device, model, sam
             cnt = 0
             for sample_1, sample_2, sample_3 in samples_list:
                 cnt += 1
-                generated_samples = np.zeros((num_points, 3, 32, 32))
+                if args.dataset == 'cifar10':
+                    generated_samples = np.zeros((num_points, 3, 32, 32))
+                elif args.dataset == 'imagenet-1k':
+                    generated_samples = np.zeros((num_points, 3, 224, 224))
                 for i in range(num_points):
                     alpha, beta = xx.ravel()[i], yy.ravel()[i]
                     generated_sample = (1 - alpha - beta) * sample_1 + alpha * sample_2 + beta * sample_3

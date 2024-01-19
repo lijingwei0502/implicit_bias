@@ -5,6 +5,8 @@ import argparse
 import numpy as np
 import torch.nn as nn
 from net import get_net
+from net_imagenet import get_net_imagenet
+
 from load_dataset import load_train_test
 from train_and_test import calculate_region_entropy
 import pynvml
@@ -63,11 +65,16 @@ if __name__ == "__main__":
     parser.add_argument('--data_choose', default=0,type=int,help='how to choose data')
     parser.add_argument('--task', default='correlation',type=str,help='task')
     args = parser.parse_args()
+    #for debug
+    # args.dataset = "imagenet-1k"
     set_seed(args.seed)
     device = 'cuda:' + found_device() if torch.cuda.is_available() else 'cpu'
     start_epoch = 0
     trainset_no_random, testset, trainloader, testloader = load_train_test(args)
-    net, criterion, optimizer, scheduler = get_net(args, device)
+    if args.dataset == 'cifar10':
+        net, criterion, optimizer, scheduler = get_net(args, device)
+    else:
+        net, criterion, optimizer, scheduler = get_net_imagenet(args, device)
     if not os.path.exists(args.dir):
         os.makedirs(args.dir)
     if not os.path.exists(args.task):

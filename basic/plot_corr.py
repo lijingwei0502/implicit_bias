@@ -1,11 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 nets = ['Resnet18','Resnet34', 'VGG19', 'MobileNet', 'SENet18', 'ShuffleNetV2', 'EfficientNetB0', 'RegNetX_200MF', 'SimpleDLA']
 # 读取数据
 
 for net in nets:
     root = str(net) + '.txt'
+    if not os.path.exists(root):
+        continue
     data = np.genfromtxt(root)
 
     # 打印原始数据的行数

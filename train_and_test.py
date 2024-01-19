@@ -33,6 +33,7 @@ def train(args, device, epoch, net, trainloader, criterion, optimizer, train_los
     total = 0
     for batch_idx, (inputs, targets) in enumerate(trainloader):
         inputs, targets = inputs.to(device), targets.to(device)
+        # print('shape', inputs.shape, 'targets', targets.shape)
         # add mixup
         inputs, targets_a, targets_b, lam = mixup_data(inputs, targets, args.mixup, device)
         optimizer.zero_grad()
@@ -138,18 +139,21 @@ def calculate_region_entropy(args, criterion, optimizer, scheduler, device, net,
             variance_entropy_list.append(variance_entropy)
         train(args, device, epoch, net, trainloader, criterion, optimizer, train_loss_list, train_accuracy_list)
         test(device, net, criterion, testloader, test_loss_list, test_accuracy_list)
-        scheduler.step()
-           
-    plot_loss_accuracy(args, start_epoch, num_epochs, average_region_list, average_entropy_list, variance_region_list, variance_entropy_list, train_loss_list, test_loss_list, train_accuracy_list, test_accuracy_list)
-    f = open(str(args.task) + '/' + str(args.net) + '.txt', 'a')
-    f.write(' '.join([str(elem) for elem in average_region_list]) + ' ' + str(train_accuracy_list[-1]) + ' ' + str(test_accuracy_list[-1]) + ' ' + str(args.weight_decay) + ' ' + str(args.lr) + ' ' + str(args.batch_size) + '\n')
-    # g = open('final/entropy' + str(args.device) + '.txt', 'a')
-    # g.write(' '.join([str(elem) for elem in average_entropy_list]) + ' ' + str(test_accuracy_list[-1]) + ' ' + str(args.weight_decay) + ' ' + str(args.lr) + ' ' + str(args.batch_size) + ' ' + str(args.net) + '\n')
-    h = open(args.dir + '/accuracy.txt', 'a')
-    h.write(' '.join([str(elem) for elem in train_loss_list]) + '\n')
-    h.write(' '.join([str(elem) for elem in test_loss_list]) + '\n')
-    h.write(' '.join([str(elem) for elem in train_accuracy_list]) + '\n')
-    h.write(' '.join([str(elem) for elem in test_accuracy_list]) + '\n')
-    h.write(' '.join([str(elem) for elem in average_region_list]) + '\n')
-    h.write(' '.join([str(elem) for elem in variance_region_list]) + '\n')
+        if scheduler is not None:
+            scheduler.step()
+        
+        if epoch % args.skip_plot == 0:
+            # plot_loss_accuracy(args, start_epoch, num_epochs, average_region_list, average_entropy_list, variance_region_list, variance_entropy_list, train_loss_list, test_loss_list, train_accuracy_list, test_accuracy_list)
+            plot_loss_accuracy(args, start_epoch, epoch - start_epoch, average_region_list, average_entropy_list, variance_region_list, variance_entropy_list, train_loss_list, test_loss_list, train_accuracy_list, test_accuracy_list)
+            f = open(str(args.task) + '/' + str(args.net) + '_' + str(epoch) + '.txt', 'a')
+            f.write(' '.join([str(elem) for elem in average_region_list]) + ' ' + str(train_accuracy_list[-1]) + ' ' + str(test_accuracy_list[-1]) + ' ' + str(args.weight_decay) + ' ' + str(args.lr) + ' ' + str(args.batch_size) + '\n')
+            # g = open('final/entropy' + str(args.device) + '.txt', 'a')
+            # g.write(' '.join([str(elem) for elem in average_entropy_list]) + ' ' + str(test_accuracy_list[-1]) + ' ' + str(args.weight_decay) + ' ' + str(args.lr) + ' ' + str(args.batch_size) + ' ' + str(args.net) + '\n')
+            h = open(args.dir + '/accuracy_' + str(epoch) + '.txt', 'a')
+            h.write(' '.join([str(elem) for elem in train_loss_list]) + '\n')
+            h.write(' '.join([str(elem) for elem in test_loss_list]) + '\n')
+            h.write(' '.join([str(elem) for elem in train_accuracy_list]) + '\n')
+            h.write(' '.join([str(elem) for elem in test_accuracy_list]) + '\n')
+            h.write(' '.join([str(elem) for elem in average_region_list]) + '\n')
+            h.write(' '.join([str(elem) for elem in variance_region_list]) + '\n')
 
