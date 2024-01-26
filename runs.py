@@ -17,21 +17,36 @@ batch_size = [1024,512,256]
 weight_decay = [1e-5,1e-6,1e-7]
 
 
-# seeds = [0]
+seeds = [0]
+batch_size = [512, 256]
 # learning_rate = [0.01,0.001]
-# batch_size = [512,256]
-# weight_decay = [1e-5,1e-6]
-# nets = ['Resnet18']
+learning_rate = [0.005, 0.01]
+weight_decay = [1e-5,1e-6]
+nets = ['VGG19']
+
+#random
+#resnet34 8003
+#VGG19 8004
+#SimpleDLA 8005
+for net in nets:
+    for data in data_choose:
+        for seed in seeds:
+            for batch in batch_size:
+                for lr in learning_rate:
+                    for weight in weight_decay:
+                        os.system(f"python main.py --dir {'imagenet_result/' + str(net) + '_graph/'+ str(net) + '_' + str(lr) + '_' + str(batch) + '_' + str(weight) } --training_epochs 200 --weight_decay {weight} --lr {lr} --batch_size {batch} --skip_plot 1 --seed {seed} --net {net} --data_choose {data} --task imagenet_result/{net} --dataset imagenet-1k --random 1 &")
+                        time.sleep(30)
+
+# nets = ['ResNest34']
 
 # for net in nets:
 #     for data in data_choose:
 #         for seed in seeds:
-#             for lr in learning_rate:
-#                 for batch in batch_size:
+#             for batch in batch_size:
+#                 for lr in learning_rate:
 #                     for weight in weight_decay:
-#                         os.system(f"python main.py --dir {'imagenet_graph/'+ str(net) + '_' + str(lr) + '_' + str(batch) + '_' + str(weight) } --training_epochs 50 --weight_decay {weight} --lr {lr} --batch_size {batch} --skip_plot 1 --seed {seed} --net {net} --data_choose {data} --task image --dataset imagenet-1k &")
+#                         os.system(f"python main.py --dir {'imagenet_result/ResNest34_graph/'+ str(net) + '_' + str(lr) + '_' + str(batch) + '_' + str(weight) } --training_epochs 50 --weight_decay {weight} --lr {lr} --batch_size {batch} --skip_plot 1 --seed {seed} --net {net} --data_choose {data} --task imagenet_result/ResNest34 --dataset imagenet-1k &")
 #                         time.sleep(50)
-
 
 
 
@@ -53,17 +68,17 @@ weight_decay = [1e-5,1e-6,1e-7]
 #                         os.system(f"python main.py --dir {'finalgraph/'+ str(net) + '_' + str(lr) + '_' + str(batch) + '_' + str(weight) + '_' + str(data) + '/' + str(seed) } --training_epochs 200 --weight_decay {weight} --lr {lr} --batch_size {batch} --skip_plot 10 --seed {seed} --net {net} --data_choose {data} --task augmentation --random 1&")
 #                         time.sleep(300)
 
-optimizer = ['adam']
+# optimizer = ['adam']
 
-for net in nets:
-    for data in data_choose:
-        for seed in seeds:
-            for opt in optimizer:
-                for lr in learning_rate:
-                    for batch in batch_size:
-                        for weight in weight_decay:
-                            os.system(f"python main.py --dir {'adamgraph/'+ str(net) + '_' + str(lr) + '_' + str(batch) + '_' + str(weight) + '_' + str(data) + '/' + str(seed) } --training_epochs 200 --optimizer {opt} --weight_decay {weight} --lr {lr} --batch_size {batch} --skip_plot 10 --seed {seed} --net {net} --data_choose {data} --task adam --scheduler none&")
-                            time.sleep(500)
+# for net in nets:
+#     for data in data_choose:
+#         for seed in seeds:
+#             for opt in optimizer:
+#                 for lr in learning_rate:
+#                     for batch in batch_size:
+#                         for weight in weight_decay:
+#                             os.system(f"python main.py --dir {'adamgraph/'+ str(net) + '_' + str(lr) + '_' + str(batch) + '_' + str(weight) + '_' + str(data) + '/' + str(seed) } --training_epochs 200 --optimizer {opt} --weight_decay {weight} --lr {lr} --batch_size {batch} --skip_plot 10 --seed {seed} --net {net} --data_choose {data} --task adam --scheduler none&")
+#                             time.sleep(500)
 
 
 # learning_rate = [0.1,0.05,0.01,0.005,0.001]

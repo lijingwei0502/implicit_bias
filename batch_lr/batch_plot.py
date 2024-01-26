@@ -4,7 +4,7 @@ import numpy as np
 nets = ['Resnet18','EfficientNetB0', 'SENet18']
 
 # 准备绘图
-plt.figure(figsize=(10, 8))
+plt.figure(figsize=(8, 7))
 
 for net in nets:
     root = 'batch' + str(net) + '.txt'

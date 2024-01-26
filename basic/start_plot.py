@@ -51,12 +51,20 @@ for net in nets:
 
 
 # Setting the figure size to match the uploaded image's aspect ratio
-plt.figure(figsize=(10, 8))
+plt.figure(figsize=(8, 7))
 
 # Plotting the data
 plt.scatter(x[0], y[0], label='Resnet18', color='blue', marker='o')
 plt.scatter(x[1], y[1], label='EfficientNetB0', color='red', marker='v')
 plt.scatter(x[2], y[2], label='SENet18', color='black', marker='^')
+
+# Performing linear regression and plotting regression lines
+for i in range(len(nets)):
+    coeffs = np.polyfit(x[i], y[i], 1)
+    regression_line = np.poly1d(coeffs)
+    x_range = np.linspace(min(x[i]), max(x[i]), 100)
+    plt.plot(x_range, regression_line(x_range), label=None, linestyle='--')
+
 
 # Adjusting font sizes to match the uploaded image as closely as possible
 plt.title('Average Regions vs. Test Accuracy', fontsize=22)
@@ -64,6 +72,9 @@ plt.xlabel('Average regions', fontsize=20)
 plt.ylabel('Test Accuracy', fontsize=20)
 plt.legend(fontsize=18)
 plt.tick_params(axis='both', which='major', labelsize=18)
+
+# 调整边距
+plt.subplots_adjust(left=0.15, right=0.85, top=0.85, bottom=0.15)  # 这里的数值可以根据需要调整
 
 root = 'start.png'
 plt.savefig(root)  # 保存图像

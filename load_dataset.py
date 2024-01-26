@@ -14,12 +14,13 @@ def load_train_test(args):
             transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
         ])
         transform_train_imagenet_1k = transforms.Compose([
-            transforms.Resize(size=(224, 224), antialias=True),
+            transforms.Resize(224),
             transforms.RandomResizedCrop(224),		
             transforms.RandomHorizontalFlip(),		
             transforms.ToTensor(),				
             transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))	
         ])
+        print('loading dataset with randomCrop')
 
     else:
         transform_train_cifar10 = transforms.Compose([

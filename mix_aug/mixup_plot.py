@@ -50,14 +50,21 @@ for dataset in datasets:
 
 
 # Setting the figure size to match the uploaded image's aspect ratio
-plt.figure(figsize=(10, 8))
+plt.figure(figsize=(8, 7))
 
 # Plotting the data
 plt.scatter(x[0], y[0], label='Primal', color='blue', marker='o')
 plt.scatter(x[1], y[1], label='Mixup', color='red', marker='v')
 
+# Performing linear regression and plotting regression lines
+for i in range(len(datasets)):
+    coeffs = np.polyfit(x[i], y[i], 1)
+    regression_line = np.poly1d(coeffs)
+    x_range = np.linspace(min(x[i]), max(x[i]), 100)
+    plt.plot(x_range, regression_line(x_range), label=None, linestyle='--')
+
 # Adjusting font sizes to match the uploaded image as closely as possible
-plt.title('The Effect of Mixup', fontsize=22)
+plt.title('Impact of Mixup', fontsize=22)
 plt.xlabel('Average regions', fontsize=20)
 plt.ylabel('Test Accuracy', fontsize=20)
 plt.legend(fontsize=18)

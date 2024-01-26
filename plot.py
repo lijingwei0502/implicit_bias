@@ -32,8 +32,8 @@ def calculate_region(args, epoch, regions_list, entropy_list, device, model, sam
         else:
             x_min, x_max = args.scope_l, args.scope_r
             y_min, y_max = args.scope_l, args.scope_r
-            xx, yy = np.meshgrid(np.linspace(x_min, x_max, num=40),
-                                np.linspace(y_min, y_max, num=40))
+            xx, yy = np.meshgrid(np.linspace(x_min, x_max, num=7),
+                                np.linspace(y_min, y_max, num=7))
             num_points = xx.ravel().shape[0]
             cnt = 0
             for sample_1, sample_2, sample_3 in samples_list:
@@ -55,19 +55,41 @@ def calculate_region(args, epoch, regions_list, entropy_list, device, model, sam
                 regions_list.append(regions)
                 entropy_list.append(entropy)
                 if args.plot and cnt %20 == 0:
-                    plt.figure(figsize=(8, 8))
+                    plt.figure(figsize=(6, 6))
                     colors = ['blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'coral', 'white', 'orange', 'purple']
                     num_classes = 10
                     class_colors = colors[:num_classes]
                     cmap = ListedColormap(class_colors)
-                    norm = BoundaryNorm(boundaries=np.arange(num_classes + 1), ncolors=num_classes)
-                    plt.contourf(xx, yy, predictions, cmap=cmap, norm=norm, levels=np.arange(num_classes+1)-0.5)
-                    plt.tick_params(axis='both', which='both', length=0, labelsize=14)
+                    # 使用contourf来填充颜色
+                    plt.contourf(xx, yy, predictions, cmap=cmap, levels=np.arange(num_classes+1)-0.5, alpha=0.8)
+
+                    # 使用contour来绘制清晰的边界线
+                    plt.contour(xx, yy, predictions, colors='k', levels=np.arange(num_classes+1)-0.5, linewidths=1)
+                    plt.tick_params(axis='both', which='both', length=0, labelsize=18)
+
+                    # 获取当前的刻度并移除第一个元素（0.0）
+                    current_xticks = plt.xticks()[0]
+                    current_yticks = plt.yticks()[0]
+
+                    # 如果当前刻度的第一个元素是0.0，则移除它
+                    if current_xticks[0] == 0:
+                        current_xticks = current_xticks[1:]
+                    if current_yticks[0] == 0:
+                        current_yticks = current_yticks[1:]
+
+                    plt.xticks(current_xticks)
+                    plt.yticks(current_yticks)
+
+                    # 在图的左下角手动添加0.0
+                    plt.text(-0.105, -0.055, '0.0', fontsize=18)
+
                     plt.xlabel(r'$\alpha$', fontsize=20, labelpad=3)  # Alpha for the x-axis
                     plt.ylabel(r'$\beta$', fontsize=20, labelpad=3)   # Beta for the y-axis
+
                     # 按照epoch数和cnt//20保存图片
-                    plt.savefig(args.dir + f'/epoch_{epoch}_cnt_{cnt//20}.png')
-                            
+                    plt.subplots_adjust(left=0.15, right=0.85, top=0.85, bottom=0.15)  # 这里的数值可以根据需要调整
+                    plt.savefig(args.dir + f'/epoch_{epoch}_cnt_{cnt//20}.png')      
+
 def cal_componet_entropy(prediction_matrix):
     mark_matrix = np.zeros(prediction_matrix.shape, dtype = 'int64')
     mark_num = 0
@@ -132,7 +154,7 @@ def cal_line(prediction_line):
 
 def plot_loss_accuracy(args, start_epoch, num_epochs, average_region_list, average_entropy_list, variance_region_list, variance_entropy_list, train_loss_list, test_loss_list, train_accuracy_list, test_accuracy_list):
     
-    plt.figure(figsize=(10, 8))
+    plt.figure(figsize=(8, 7))
     plt.plot(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot), average_region_list, label='Average Regions')
     # plt.fill_between(range(start_epoch, start_epoch + num_epochs + 1, args.skip_plot), 
     #                 np.array(average_region_list) - np.array(variance_region_list), 

@@ -3,3 +3,12 @@ finalgraph
 result_corr
 __pycache__
 .DS_Store
+image
+2d
+adam
+adamgraph
+basic
+imagenet_graph
+adamgraph
+random
+imagenet_result

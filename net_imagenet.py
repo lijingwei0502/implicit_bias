@@ -1,7 +1,7 @@
 from models_imagenet import *
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
-
+import torchvision
 
 def get_net_imagenet(args, device):
     num_classes = 10
@@ -14,29 +14,30 @@ def get_net_imagenet(args, device):
     elif args.net == 'Resnet34':
         net = ResNet34()
     elif args.net == 'VGG19':
-        net = VGG('VGG19')
-    elif args.net == 'GoogLeNet':
-        net = GoogLeNet()
-    elif args.net == 'DenseNet121':
-        net = DenseNet121()
-    elif args.net == 'ResNeXt29_2x64d':
-        net = ResNeXt29_2x64d()
+        net = torchvision.models.vgg19(weights = None)
+    # elif args.net == 'GoogLeNet':
+    #     net = GoogLeNet()
+    # elif args.net == 'DenseNet121':
+    #     net = DenseNet121()
+    # elif args.net == 'ResNeXt29_2x64d':
+    #     net = ResNeXt29_2x64d()
     elif args.net == 'MobileNet':
-        net = MobileNet()
-    elif args.net == 'MobileNetV2':
-        net = MobileNetV2()
-    elif args.net == 'DPN92':
-        net = DPN92()
+        net = torchvision.models.mobilenet_v2(weights = None)
+    # elif args.net == 'MobileNetV2':
+    #     net = MobileNetV2()
+    # elif args.net == 'DPN92':
+    #     net = DPN92()
     elif args.net == 'SENet18':
-        net = SENet18()
+        net = SENet18()  
     elif args.net == 'ShuffleNetV2':
-        net = ShuffleNetV2(1)
+        net = torchvision.models.shufflenet_v2_x1_0(weights = None)
     elif args.net == 'EfficientNetB0':
-        net = EfficientNetB0()
+        net = torchvision.models.efficientnet_b0(weights = None)
     elif args.net == 'RegNetX_200MF':
-        net = RegNetX_200MF()
+        # net = RegNetX_200MF()        # torchvision.models.regnet_x_400mf
+        net = torchvision.models.regnet_x_400mf(weights = None)
     elif args.net == 'SimpleDLA':
-        net = SimpleDLA()
+        net = SimpleDLA()      
     
     
     # cifar100 change output layer
