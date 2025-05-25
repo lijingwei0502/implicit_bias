@@ -50,7 +50,7 @@ def get_net(args, device):
     criterion = nn.CrossEntropyLoss()
     
     if args.optimizer == 'sgd':
-        optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay = args.weight_decay)
+        optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = args.weight_decay)
     elif args.optimizer == 'adam':
         optimizer = optim.Adam(net.parameters(), lr=args.lr, weight_decay = args.weight_decay)
     elif args.optimizer == 'adagrad':

@@ -132,9 +132,9 @@ def load_train_test(args):
             root='data', split='test', download=True, transform=transform_test_svhn)
 
     elif args.dataset == 'imagenet-1k':
-        trainset = datasets.ImageFolder('data/imagenet-1k/train', transform=transform_train_imagenet_1k)
-        testset = datasets.ImageFolder('data/imagenet-1k/val', transform=transform_test_imagenet_1k)
-        trainset_no_random = datasets.ImageFolder('data/imagenet-1k/train', transform=transform_train_imagenet_1k_no_random)
+        trainset = datasets.ImageFolder('/data_server3/ljw/imagenet/train', transform=transform_train_imagenet_1k)
+        testset = datasets.ImageFolder('/data_server3/ljw/imagenet/val', transform=transform_test_imagenet_1k)
+        trainset_no_random = datasets.ImageFolder('/data_server3/ljw/imagenet/train', transform=transform_train_imagenet_1k_no_random)
         # testset_no_random = datasets.ImageFolder('data/imagenet-1k/val', transform=transform_test_imagenet_1k)
         
 

@@ -1,6 +1,6 @@
-## The Correlation of Average Regions and Generalization Gap
+## Understanding Nonlinear Implicit Bias via Region Counts in Input Space
 
-I'm playing with [PyTorch](http://pytorch.org/) on the CIFAR10, CIFAR100 and Imagenet dataset.
+
 
 ## Prerequisites
 - Python 3.6+
@@ -10,5 +10,13 @@ I'm playing with [PyTorch](http://pytorch.org/) on the CIFAR10, CIFAR100 and Ima
 ```
 # Start training with: 
 python main.py
+
+```
+
+## Hyperparameters
+
+```
+# Run the experiment with suitable hyperparameters: 
+python main.py --batch_size 256 --lr 0.01
 
 ```

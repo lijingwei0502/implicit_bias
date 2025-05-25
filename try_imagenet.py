@@ -48,7 +48,7 @@ val_transforms = transforms.Compose([
     transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
 ])
 
-train_dir = "data/imagenet-1k/train"           #训练集路径
+train_dir = "/data_server3/ljw/imagenet/train"           #训练集路径
 #train_dir = "D:/Dateset/Alldataset/mini-imagenet/train"
 #train_dir = "D:/2021year/CVPR/PermuteNet-main/CNNonMNIST/data/trainNum_T/test"
 #定义数据集
@@ -58,7 +58,7 @@ train_dataloader = torch.utils.data.DataLoader(train_datasets, batch_size=batch_
 
 #val_dir = "D:/Dateset/Alldataset/mini-imagenet/val"
 #val_dir = "D:/2021year/CVPR/PermuteNet-main/CNNonMNIST/data/trainNum_T/val"
-val_dir = "data/imagenet-1k/val"
+val_dir = "/data_server3/ljw/imagenet/val"
 val_datasets = datasets.ImageFolder(val_dir, transform=val_transforms)
 val_dataloader = torch.utils.data.DataLoader(val_datasets, batch_size=batch_size, shuffle=True,num_workers=8,pin_memory=True)#,num_workers=16,pin_memory=True
 
