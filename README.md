@@ -26,17 +26,7 @@ python main.py \
     --lr 0.01 \
     --optimizer sgd \
     --scheduler cosine \
-    --seed 0
-```
-
-**Resuming from checkpoint:**
-
-```bash
-python main.py \
-    --dataset cifar10 \
-    --net Resnet18 \
-    --resume True \
-    --dir ./logs/run1
+    --data_choose 1
 ```
 
 **Common arguments:**
@@ -48,7 +38,7 @@ python main.py \
 * `--lr` — learning rate (default `0.01`)
 * `--optimizer` — optimizer type (`sgd`, `adam`, etc.)
 * `--scheduler` — LR scheduler (`cosine`, `step`, etc.)
-* `--seed` — random seed for reproducibility
+* `--data_choose` — how to choose data to generate calculate plane (`1d`, `2d`, etc.)
 
 The script will:
 
