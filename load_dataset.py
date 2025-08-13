@@ -2,8 +2,6 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 from torchvision import datasets
-from torch.utils.data import Subset
-import numpy as np
 
 def load_train_test(args):
     if args.random:
@@ -63,23 +61,6 @@ def load_train_test(args):
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
 
-    transform_train_svhn = transforms.Compose([
-        transforms.RandomCrop(32, padding=4),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5)),
-    ])
-
-    transform_train_svhn_no_random = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5)),
-    ])
-
-    transform_test_svhn = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5)),
-    ])
-
     transform_test_imagenet_1k = transforms.Compose([
         transforms.Resize(size=(224, 224), antialias=True),
         transforms.ToTensor(),
@@ -91,20 +72,6 @@ def load_train_test(args):
         transforms.ToTensor(),				
         transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))	
     ])
-
-    class RemappedSubset(torch.utils.data.Dataset):
-        def __init__(self, dataset, indices, label_map):
-            self.dataset = dataset
-            self.indices = indices
-            self.label_map = label_map
-
-        def __len__(self):
-            return len(self.indices)
-
-        def __getitem__(self, idx):
-            original_tuple = self.dataset[self.indices[idx]]
-            return (original_tuple[0], self.label_map[original_tuple[1]])
-
 
     if args.dataset == 'cifar10':
         trainset = torchvision.datasets.CIFAR10(
@@ -122,15 +89,6 @@ def load_train_test(args):
         testset = torchvision.datasets.CIFAR100(
             root='data', train=False, download=True, transform=transform_test_cifar100)
         
-    # use svhn
-    elif args.dataset == 'svhn':
-        trainset = torchvision.datasets.SVHN(
-            root='data', split='train', download=True, transform=transform_train_svhn)
-        trainset_no_random = torchvision.datasets.SVHN(
-            root='data', split='train', download=True, transform=transform_train_svhn_no_random)
-        testset = torchvision.datasets.SVHN(
-            root='data', split='test', download=True, transform=transform_test_svhn)
-
     elif args.dataset == 'imagenet-1k':
         trainset = datasets.ImageFolder('/data_server3/ljw/imagenet/train', transform=transform_train_imagenet_1k)
         testset = datasets.ImageFolder('/data_server3/ljw/imagenet/val', transform=transform_test_imagenet_1k)

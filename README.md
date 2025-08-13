@@ -1,22 +1,74 @@
-## Understanding Nonlinear Implicit Bias via Region Counts in Input Space
+# Understanding Nonlinear Implicit Bias via Region Counts in Input Space
+This repository contains the code of the paper [Understanding Nonlinear Implicit Bias via Region Counts in Input Space](https://arxiv.org/pdf/2505.11370).
 
+## Requirements
 
+Install dependencies from the provided conda environment file:
 
-## Prerequisites
-- Python 3.6+
-- PyTorch 1.0+
+```bash
+conda env create -f environment.yml
+````
 
-## Training
+---
+
+## Train the Model
+
+All training options are configurable via command-line arguments.
+
+**Basic training example (CIFAR10, ResNet18):**
+
+```bash
+python main.py \
+    --dataset cifar10 \
+    --net Resnet18 \
+    --training_epochs 200 \
+    --batch_size 256 \
+    --lr 0.01 \
+    --optimizer sgd \
+    --scheduler cosine \
+    --seed 0
 ```
-# Start training with: 
-python main.py
 
+**Resuming from checkpoint:**
+
+```bash
+python main.py \
+    --dataset cifar10 \
+    --net Resnet18 \
+    --resume True \
+    --dir ./logs/run1
 ```
 
-## Hyperparameters
+**Common arguments:**
+
+* `--dataset` — dataset name (`cifar10`, `cifar100`, `imagenet`, etc.)
+* `--net` — network architecture (`Resnet18`, `Resnet34`, …)
+* `--training_epochs` — number of training epochs (default `200`)
+* `--batch_size` — batch size (default `256`)
+* `--lr` — learning rate (default `0.01`)
+* `--optimizer` — optimizer type (`sgd`, `adam`, etc.)
+* `--scheduler` — LR scheduler (`cosine`, `step`, etc.)
+* `--seed` — random seed for reproducibility
+
+The script will:
+
+1. Load the specified dataset and apply optional data augmentation.
+2. Initialize the model, optimizer, and scheduler.
+3. Train the model and compute **region count** in the input space.
+4. Save checkpoints if `--resume True` is used.
+
+---
+
+**Acknowledgements**: this repository uses codes and resources from [Train CIFAR10 with PyTorch](https://github.com/kuangliu/pytorch-cifar).
+
+## Citation
 
 ```
-# Run the experiment with suitable hyperparameters: 
-python main.py --batch_size 256 --lr 0.01
-
+@inproceedings{li2025understanding,
+  title={Understanding Nonlinear Implicit Bias via Region Counts in Input Space},
+  author={Li, Jingwei and Xu, Jing and Wang, Zifan and Zhang, Huishuai and Zhang, Jingzhao},
+  booktitle={International Conference on Machine Learning},
+  year={2025},
+  organization={PMLR}
+}
 ```

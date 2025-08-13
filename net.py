@@ -1,12 +1,11 @@
 from models import *
-import torch.backends.cudnn as cudnn
 import torch.optim as optim
 
 
 def get_net(args, device):
     num_classes = 10
-    if args.dataset == "imagenet-1k":
-        num_classes = 1000
+    if args.dataset == "cifar100":
+        num_classes = 100
     print('[dataset]: ', args.dataset, '[num_classes]: ', num_classes, '[model]: ', args.net)
 
     if args.net == 'Resnet18':
@@ -37,13 +36,12 @@ def get_net(args, device):
         net = RegNetX_200MF()
     elif args.net == 'SimpleDLA':
         net = SimpleDLA()
-    
-    
-    # cifar100 change output layer
+
     if args.dataset == 'cifar100':
-        net.linear = nn.Linear(512, 100)
-        net.linear.weight.data.normal_(0, 0.01)
-        net.linear.bias.data.zero_()
+        in_features = net.linear.in_features 
+        net.linear = nn.Linear(in_features, 100)
+        nn.init.normal_(net.linear.weight, 0, 0.01)
+        nn.init.zeros_(net.linear.bias)
 
     net = net.to(device)
 
@@ -78,7 +76,7 @@ def get_net(args, device):
         scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, max_lr=0.1, steps_per_epoch=len(trainloader), epochs=args.training_epochs)
     elif args.scheduler == 'cosineannealingwarmrestarts':
         scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
-    elif args.scheduler == 'none': # change
+    elif args.scheduler == 'none': 
         scheduler = None
 
     return net, criterion, optimizer, scheduler

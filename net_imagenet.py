@@ -15,18 +15,8 @@ def get_net_imagenet(args, device):
         net = ResNet34()
     elif args.net == 'VGG19':
         net = torchvision.models.vgg19(weights = None)
-    # elif args.net == 'GoogLeNet':
-    #     net = GoogLeNet()
-    # elif args.net == 'DenseNet121':
-    #     net = DenseNet121()
-    # elif args.net == 'ResNeXt29_2x64d':
-    #     net = ResNeXt29_2x64d()
     elif args.net == 'MobileNet':
         net = torchvision.models.mobilenet_v2(weights = None)
-    # elif args.net == 'MobileNetV2':
-    #     net = MobileNetV2()
-    # elif args.net == 'DPN92':
-    #     net = DPN92()
     elif args.net == 'SENet18':
         net = SENet18()  
     elif args.net == 'ShuffleNetV2':
@@ -39,8 +29,6 @@ def get_net_imagenet(args, device):
     elif args.net == 'SimpleDLA':
         net = SimpleDLA()      
     
-    
-    # cifar100 change output layer
     if args.dataset == 'cifar100':
         net.linear = nn.Linear(512, 100)
         net.linear.weight.data.normal_(0, 0.01)

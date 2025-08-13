@@ -1,2 +1,9 @@
-data
-finalgraph
+data/
+finalgraph/
+models_imagenet/
+tasks/
+net_imagenet.py
+try_imagenet.py
+runs.py
+plot_corr.py
+measure.py
